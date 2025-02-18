@@ -1,0 +1,24 @@
+CREATE TABLE IF NOT EXISTS users (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(255) NOT NULL UNIQUE,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS portfolios (
+    id SERIAL PRIMARY KEY,
+    user_id INT REFERENCES users(id) ON DELETE CASCADE,
+    name VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS transactions (
+    id SERIAL PRIMARY KEY,
+    portfolio_id INT REFERENCES portfolios(id) ON DELETE CASCADE,
+    cryptocurrency VARCHAR(50) NOT NULL,
+    amount DECIMAL(18, 8) NOT NULL,
+    price DECIMAL(18, 8) NOT NULL,
+    transaction_type VARCHAR(10) NOT NULL, -- 'buy' или 'sell'
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
